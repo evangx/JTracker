@@ -1,31 +1,49 @@
-import java.io.File;
-import java.io.FileReader;
-import java.util.Scanner;
+import java.io.RandomAccessFile;
 public class lector{
 
-File f;
-public void programa(){
-LogFilter lg = new LogFilter();
-f=new File("C:\\Program Files\\Hearthstone\\Logs\\Zone.log");
+RandomAccessFile f = null;
+long indice_actual=0;
+LogFilter lf;
+
+
+
+public void preparar(){
+
+lf= new LogFilter();
 try{
-FileReader fr= new FileReader(f);
-Scanner sc= new Scanner(fr);
-int lineasprocesadas=0;
-while(sc.hasNextLine()){
-lg.Filter(sc.nextLine());
-//lineasprocesadas+=1;
-//System.out.println(lineasprocesadas);
-}
-//System.out.println(lineasprocesadas);
+f=new RandomAccessFile("C:\\Program Files\\Hearthstone\\Logs\\Zone.log", "r");
+indice_actual=f.length();
+System.out.println("original size"+ indice_actual);
 }
 catch(Exception e){
 System.out.println(e.getMessage());
 }
-
 }
 
-public static void main(String [] args){
-lector l = new lector();
-l.programa();
+public void programa(){
+
+try{
+f=new RandomAccessFile("C:\\Program Files\\Hearthstone\\Logs\\Zone.log", "r");
+if(indice_actual<f.length()){
+f.seek(indice_actual);
+while(f.getFilePointer()<f.length()){
+lf.Filter(f.readLine());
+System.out.println("ciclo");
 }
+
+indice_actual=f.length();
+}
+else if(indice_actual==f.length()){
+
+}
+else if (indice_actual>f.length()){
+System.out.println("algo raro paso"+ f.length()+" "+indice_actual);
+indice_actual=0;
+}
+}
+catch(Exception e){
+System.out.println(e.getMessage());
+}
+}
+
 }
