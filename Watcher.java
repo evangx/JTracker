@@ -4,7 +4,7 @@ public class Watcher{
 boolean vigilar=true;
 
 public void programa(){
-lector l= new lector();
+Reader l= new Reader();
 l.preparar();
 while(vigilar){
 l.programa();
