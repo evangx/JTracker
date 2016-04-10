@@ -6,7 +6,7 @@ import java.awt.event.*;
 import java.io.File;
 
 
-public class GUI extends JFrame{
+public class GUI extends JFrame implements ActionListener{
 
 Watcher logtracker;
 LogFilter lg;
@@ -25,7 +25,7 @@ setJMenuBar(jmb);
 
 CreateDeck = new JButton("Nuevo deck");
 CreateDeck.setBounds(10, 10, 100, 30);
-
+CreateDeck.addActionListener(this);
 add(CreateDeck);
 
 
@@ -36,15 +36,12 @@ System.exit(0);
 }
 }
 );
-
-
 }
 
-
-
-
-
-
-
+public void actionPerformed(ActionEvent e){
+if(e.getSource()== CreateDeck){
+new SelectClassNewDeckGUI(this);
+}
+}
 
 }
