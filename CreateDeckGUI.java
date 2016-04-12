@@ -61,4 +61,7 @@ setVisible(true);
 mainMenu.setVisible(false);
 }
 
+public void updateNumberOfCardsLabel(){
+}
+
 }
