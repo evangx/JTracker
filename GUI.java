@@ -38,6 +38,9 @@ System.exit(0);
 );
 }
 
+public void updateDecks(){
+}
+
 public void actionPerformed(ActionEvent e){
 if(e.getSource()== CreateDeck){
 new SelectClassNewDeckGUI(this);
