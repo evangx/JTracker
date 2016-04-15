@@ -133,6 +133,117 @@ setVisible(true);
 mainMenu.setVisible(false);
 }
 
+CreateDeckGUI(JFrame lastWindow, String selectedClass, String title, ArrayList deckToEdit, String path){
+super("JTracker");
+setLayout(null);
+this.mainMenu=(GUI)lastWindow;
+setSize(mainMenu.getSize());
+setLocation(mainMenu.getLocation());
+
+mySelectedClass=selectedClass;
+
+TrackNewDeck = new JButton("Crear Mazo Detectado");
+TrackNewDeck.setBounds(10,10,160, 30);
+TrackNewDeck.addActionListener(this);
+add(TrackNewDeck);
+
+Save = new JButton("Guardar");
+Save.setBounds(180, 10, 80, 30);
+Save.addActionListener(this);
+add(Save);
+
+Cancel = new JButton("Cancelar");
+Cancel.setBounds(270, 10, 90, 30);
+Cancel.addActionListener(this);
+add(Cancel);
+
+nameOfDeckLabel = new JLabel("Nombre del deck: ");
+nameOfDeckLabel.setBounds(10,50, 105, 30);
+add(nameOfDeckLabel);
+
+nameOfDeckText = new JTextField(30);
+nameOfDeckText.setBounds(125, 50, 200, 30);
+add(nameOfDeckText);
+
+addWindowListener(new WindowAdapter(){
+public void windowClosing(WindowEvent e){
+System.exit(0);
+}
+}
+);
+
+
+mySelectedCards = new CardList(this);
+JScrollPane scrollListSelectedCards = new JScrollPane(mySelectedCards);
+scrollListSelectedCards.setBounds(100, 110, 300, 400);
+add(scrollListSelectedCards);
+
+
+
+Connection(); 
+ResultSet resultado = null; 
+try { 
+resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n on (c.cardId=n.cardId) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='esMX' and cost>=0 and rarity!='' and collectible=1 order by c.playerClass desc, cost, name;"); 
+}
+catch (SQLException e) { 
+System.out.println(e.getMessage()); 
+}
+cartas = new Vector();
+try{
+int indexForCards=0;
+while(resultado.next()){
+cartas.add( new Card(resultado.getString(1),resultado.getString(2), resultado.getInt(4), resultado.getString(3)));
+if(resultado.getString(1).equals("EX1_247")){
+System.out.println("EX1_247"+resultado.getString(1));
+}
+for (int i=0, j=0; i<deckToEdit.size();i++, j++){
+if(deckToEdit.get(i).equals(resultado.getString(1))){
+System.out.println(indexForCards);
+mySelectedCards.addCard(new Card(resultado.getString(1),resultado.getString(2), resultado.getInt(4), resultado.getString(3)));
+indexForCards+=1;
+}
+}
+}
+}
+catch(Exception e){
+System.out.println("Fallo al crear objetos "+e.getMessage());
+}
+Vector dataNames = new Vector();
+dataNames.add("Cartas");
+
+JTable table = new JTable(new MyTableModel(cartas, dataNames));
+table.setDefaultRenderer(JPanel.class, new DataRenderer());
+table.setFillsViewportHeight(true);
+JScrollPane scrollPaneTable = new JScrollPane(table);
+scrollPaneTable.setBounds(450, 110, 300, 400);
+add(scrollPaneTable);
+table.addMouseListener(new MouseAdapter() {
+  public void mouseReleased(MouseEvent e) {
+    if (e.getClickCount() == 1) {
+      JTable target = (JTable)e.getSource();
+      int row = target.getSelectedRow();
+      int column = target.getSelectedColumn();
+		generateCard(row);
+		updateNumberOfCardsLabel();
+		//System.out.println("row "+ row +" col " + column);
+      
+    }
+  }
+});
+
+numberOfCardsLabel = new JLabel();
+numberOfCardsLabel.setBounds(100, 520, 150, 30);
+add(numberOfCardsLabel);
+
+
+numberOfCardsLabel.setText(deckToEdit.size()+"/30");
+nameOfDeckText.setText(title);
+pathEditedDeck=path;
+
+setVisible(true);
+mainMenu.setVisible(false);
+}
+
 public void updateNumberOfCardsLabel(){
 numberOfCardsLabel.setText(mySelectedCards.getCurrentNumberOfCards()+"/30");
 }
@@ -210,6 +321,7 @@ JOptionPane.showMessageDialog(null,"El nombre del deck no es valido","Error",jav
 else if(e.getSource()==Cancel){
 mainMenu.setSize(getSize());
 mainMenu.setLocation(getLocation());
+mainMenu.updateDecks();
 mainMenu.setVisible(true);
 setVisible(false);
 dispose();

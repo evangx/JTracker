@@ -1,6 +1,7 @@
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.event.*;
 import java.io.File;
@@ -8,9 +9,11 @@ import java.io.File;
 
 public class GUI extends JFrame implements ActionListener{
 
+JTextArea ta;
 Watcher logtracker;
 LogFilter lg;
 JButton CreateDeck;
+DeckList dl;
 
 
 public GUI(){
@@ -36,9 +39,17 @@ System.exit(0);
 }
 }
 );
+
+File f = new File("Decks/");
+dl = new DeckList(this, f.listFiles());
+
+JScrollPane scrollListOfDecks = new JScrollPane(dl);
+scrollListOfDecks.setBounds(50,50, 400, 500);
+add(scrollListOfDecks);
 }
 
 public void updateDecks(){
+dl.updateDecks();
 }
 
 public void actionPerformed(ActionEvent e){
