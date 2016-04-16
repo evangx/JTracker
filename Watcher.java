@@ -1,11 +1,21 @@
 import java.io.File;
 
-public class Watcher{
+public class Watcher extends Thread{
 boolean vigilar=true;
+GUI jTracker;
+Reader l;
 
-public void programa(){
-Reader l= new Reader();
+public Watcher(GUI jTracker){
+this.jTracker = jTracker;
+l= new Reader(jTracker);
 l.preparar();
+}
+
+public Watcher(){
+}
+
+public void run(){
+
 while(vigilar){
 l.programa();
 try{
@@ -18,9 +28,11 @@ System.out.println(e.getMessage());
 }
 
 
+
+
 public static void main(String [] args){
-Watcher w = new Watcher();
-w.programa();
+Watcher w = new Watcher(null);
+w.start();
 }
 
 }

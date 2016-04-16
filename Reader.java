@@ -4,12 +4,15 @@ public class Reader{
 RandomAccessFile f = null;
 long indice_actual=0;
 LogFilter lf;
+GUI jTracker;
 
-
+public Reader(GUI jTracker){
+this.jTracker=jTracker;
+}
 
 public void preparar(){
 
-lf= new LogFilter();
+lf= new LogFilter(jTracker);
 try{
 f=new RandomAccessFile("C:\\Program Files\\Hearthstone\\Logs\\Zone.log", "r");
 indice_actual=f.length();
@@ -28,7 +31,6 @@ if(indice_actual<f.length()){
 f.seek(indice_actual);
 while(f.getFilePointer()<f.length()){
 lf.Filter(f.readLine());
-System.out.println("ciclo");
 }
 
 indice_actual=f.length();

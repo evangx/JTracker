@@ -52,6 +52,14 @@ public void updateDecks(){
 dl.updateDecks();
 }
 
+public void setLogFilter(LogFilter filt){
+lg=filt;
+}
+
+public LogFilter getLogFilter(){
+return lg;
+}
+
 public void actionPerformed(ActionEvent e){
 if(e.getSource()== CreateDeck){
 new SelectClassNewDeckGUI(this);

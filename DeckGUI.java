@@ -107,6 +107,7 @@ add(buttons, BorderLayout.SOUTH);
 }
 
 private void trackDeck(){
+new TrackDeckGUI((GUI)lastWindow, deck.getListOfCards());
 }
 
 private void editDeck(){
