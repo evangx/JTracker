@@ -89,26 +89,50 @@ System.out.print("Card destroyed: ");
 getName(log);
 mySelectedCards.cardPlayed(getId(log));
 }
+else if(log.indexOf("] zone from FRIENDLY PLAY (Hero) -> FRIENDLY GRAVEYARD")!=-1 || log.indexOf("] zone from OPPOSING PLAY (Hero) -> OPPOSING GRAVEYARD")!=-1){
+System.out.print("Someone lose: ");
+getName(log);
+getGameOver(log);
+}
 }
 }
 else{
+/*
 if(log.indexOf("] zone from  -> OPPOSING PLAY (Hero)")!=-1 || log.indexOf("] zone from  -> FRIENDLY PLAY (Hero)")!=-1){
+if(log.indexOf("] zone from  -> OPPOSING PLAY (Hero)")!=-1){
+System.out.println("Enemy hero: "+getOpposingHeroClass(log));
+opposingHeroDetected=true;
+}
+if(opposingHeroDetected){
 inGame=true;
 System.out.println("Inicia juego");
 inMulligan=true;
 System.out.println("En Mano: ");
 }
 }
+*/
+if(log.indexOf("] zone from  -> OPPOSING PLAY (Hero)")!=-1){
+
+System.out.println("Enemy hero: "+getOpposingHeroClass(log));
+
+inGame=true;
+System.out.println("Inicia juego");
+inMulligan=true;
+System.out.println("En Mano: ");
+
+}
+}
 }
 }
 
 //D 23:05:34.3540708 ZoneChangeList.ProcessChanges() - id=2 local=False [name=Savannah Highmane id=54 zone=HAND zonePos=0 cardId=EX1_534 player=2] zone from FRIENDLY DECK -> FRIENDLY HANDprivate void getName(String log){
-private void getName(String log){
+private String getName(String log){
 if(log.indexOf(" [name=")!=-1 && log.indexOf(" id=")!=-1){
 log=log.substring(log.indexOf(" [name=")+7, log.length());
 log=log.substring(0, log.indexOf(" id="));
 System.out.println(log);
 }
+return log;
 }
 //D 23:05:34.3540708 ZoneChangeList.ProcessChanges() - id=2 local=False [name=Savannah Highmane id=54 zone=HAND zonePos=0 cardId=EX1_534 player=2] zone from FRIENDLY DECK -> FRIENDLY HAND
 private String getId(String log){
@@ -119,5 +143,65 @@ System.out.println(log);
 }
 return(log);
 }
+//[Zone] ZoneChangeList.ProcessChanges() - id=1 local=False [name=Uther Lightbringer id=36 zone=PLAY zonePos=0 cardId=HERO_04 player=2] zone from  -> OPPOSING PLAY (Hero)
+
+//D 23:05:34.3540708 ZoneChangeList.ProcessChanges() - id=37 local=False [name=Uther Lightbringer id=4 zone=GRAVEYARD zonePos=0 cardId=HERO_04 player=1] zone from FRIENDLY PLAY (Hero) -> FRIENDLY GRAVEYARD
+//D 22:50:43.6898022 ZoneChangeList.ProcessChanges() - id=65 local=False [name=Rexxar id=66 zone=GRAVEYARD zonePos=0 cardId=HERO_05 player=2] zone from OPPOSING PLAY (Hero) -> OPPOSING GRAVEYARD
+private boolean getGameOver(String log){
+boolean isWinner=true;
+if(log.indexOf("] zone from FRIENDLY PLAY (Hero) -> FRIENDLY GRAVEYARD")!=-1){
+isWinner=false;
+}
+inGame=false;
+mySelectedCards.restartList();
+return isWinner;
+}
+
+private int getOpposingHeroClass(String log){
+int heroClass=0;
+String opposingHero="";
+/*
+Warrior	1
+Shaman	2
+Rogue		3
+Paladin	4
+Hunter	5
+Druid		6
+Warlock	7
+Mage		8
+Priest	9
+*/
+opposingHero=getName(log);
+if(opposingHero.equals("Garrosh Hellscream")){
+heroClass=1;
+}
+else if(opposingHero.equals("Thrall")){
+heroClass=2;
+}
+else if(opposingHero.equals("Valeera Sanguinar")){
+heroClass=3;
+}
+else if(opposingHero.equals("Uther Lightbringer")){
+heroClass=4;
+}
+else if(opposingHero.equals("Rexxar")){
+heroClass=5;
+}
+else if(opposingHero.equals("Malfurion Stormrage")){
+heroClass=6;
+}
+else if(opposingHero.equals("Gul'dan")){
+heroClass=7;
+}
+else if(opposingHero.equals("Jaina Proudmoore")){
+heroClass=8;
+}
+else if(opposingHero.equals("Anduin Wrynn")){
+heroClass=9;
+}
+
+return heroClass;
+}
+
 }
 

@@ -186,6 +186,14 @@ temp.unplayCopy();
 }
 }
 
+public void restartList(){
+Card temp;
+for(int i=0; i<currentCards.size();i++){
+temp=(Card)getComponent(i);
+temp.restoreCard();
+}
+}
+
 
 public static void main(String [] args){
 JFrame a= new JFrame();
