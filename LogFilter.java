@@ -7,6 +7,7 @@ boolean firstDraw=false;
 boolean MulliganStarted=false;
 GUI jTracker;
 CardList mySelectedCards;
+int opposingHero;
 
 public LogFilter(GUI jTracker){
 this.jTracker=jTracker;
@@ -92,7 +93,7 @@ mySelectedCards.cardPlayed(getId(log));
 else if(log.indexOf("] zone from FRIENDLY PLAY (Hero) -> FRIENDLY GRAVEYARD")!=-1 || log.indexOf("] zone from OPPOSING PLAY (Hero) -> OPPOSING GRAVEYARD")!=-1){
 System.out.print("Someone lose: ");
 getName(log);
-getGameOver(log);
+Record.createRecord(jTracker.getCurrentDeck(),opposingHero,getGameOver(log));
 }
 }
 }
@@ -112,8 +113,7 @@ System.out.println("En Mano: ");
 }
 */
 if(log.indexOf("] zone from  -> OPPOSING PLAY (Hero)")!=-1){
-
-System.out.println("Enemy hero: "+getOpposingHeroClass(log));
+opposingHero=getOpposingHeroClass(log);
 
 inGame=true;
 System.out.println("Inicia juego");

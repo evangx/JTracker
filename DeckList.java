@@ -11,9 +11,9 @@ public class DeckList extends JPanel{
 
 ArrayList<File> decks;
 File[] listOfDecks;
-JFrame parent;
+GUI parent;
 
-public DeckList(JFrame parent, File[] list){
+public DeckList(GUI parent, File[] list){
 super();
 listOfDecks=list;
 this.parent=parent;
@@ -27,7 +27,7 @@ decks.add(deck);
 }
 setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 for(int i=0; i<decks.size(); i++){
-add(new DeckGUI(decks.get(i), this, parent));
+add(new DeckGUI(decks.get(i), this,  parent));
 }
 
 }
@@ -44,11 +44,11 @@ createListOfDecks();
 public static void main(String [] args){
 JFrame a= new JFrame();
 File f= new File ("Decks/");
-DeckList dl = new DeckList(a, f.listFiles());
+//DeckList dl = new DeckList(a, f.listFiles());
 a.setSize(500,500);
-JScrollPane scrollListSelectedCards = new JScrollPane(dl);
+//JScrollPane scrollListSelectedCards = new JScrollPane(dl);
 
-a.add(scrollListSelectedCards);
+//a.add(scrollListSelectedCards);
 a.setVisible(true);
 
 

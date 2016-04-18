@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class CardList extends JPanel{
-
+ 
 private ArrayList currentCards; 
 private int numberOfCards=0;
 private boolean addListeners=true;
@@ -39,7 +39,7 @@ int temp=-1;
 for(int i=0; i<currentCards.size();i++){
 if(id.equals((currentCards.get(i)))){
 temp=i;
-System.out.println("Copia existente");
+//System.out.println("Copia existente");
 }
 }
 return temp;
@@ -129,7 +129,7 @@ numberOfCards-=1;
 createDeckWindow.updateNumberOfCardsLabel();
 tem.deleteCopy();
 
-System.out.println("copia borrada");
+//System.out.println("copia borrada");
 }
 else{
 remove(tem);
@@ -138,16 +138,16 @@ createDeckWindow.updateNumberOfCardsLabel();
 currentCards.remove(currentCards.indexOf(tem.getId()));
 
 updateUI();
-System.out.println("carta borrada");
+//System.out.println("carta borrada");
 }
-System.out.println("cantidad restante"+numberOfCards);
+//System.out.println("cantidad restante"+numberOfCards);
 }
 }
 );
 }
 numberOfCards+=1;
 add(temp, index);
-System.out.println("cantidad insertada"+numberOfCards);
+//System.out.println("cantidad insertada"+numberOfCards);
 }
 
 public int getCurrentNumberOfCards(){

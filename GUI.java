@@ -14,6 +14,7 @@ Watcher logtracker;
 LogFilter lg;
 JButton CreateDeck;
 DeckList dl;
+private String currentDeck="";
 
 
 public GUI(){
@@ -41,7 +42,7 @@ System.exit(0);
 );
 
 File f = new File("Decks/");
-dl = new DeckList(this, f.listFiles());
+dl = new DeckList((GUI)this, f.listFiles());
 
 JScrollPane scrollListOfDecks = new JScrollPane(dl);
 scrollListOfDecks.setBounds(50,50, 400, 500);
@@ -60,10 +61,21 @@ public LogFilter getLogFilter(){
 return lg;
 }
 
+public String getCurrentDeck(){
+return currentDeck;
+}
+
+public void setCurrentDeck(String currentDeck){
+this.currentDeck=currentDeck;
+}
+
 public void actionPerformed(ActionEvent e){
 if(e.getSource()== CreateDeck){
 new SelectClassNewDeckGUI(this);
 }
 }
+
+
+
 
 }

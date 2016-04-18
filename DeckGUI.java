@@ -23,9 +23,9 @@ File fileDeck;
 JButton delete, copy, edit, view, track;
 DeckList deckList;
 Deck deck;
-JFrame lastWindow;
+GUI lastWindow;
 
-public DeckGUI(File file, DeckList parent, JFrame mainJFrame){
+public DeckGUI(File file, DeckList parent, GUI mainJFrame){
 super();
 lastWindow=mainJFrame;
 deck=null;
@@ -107,6 +107,7 @@ add(buttons, BorderLayout.SOUTH);
 }
 
 private void trackDeck(){
+lastWindow.setCurrentDeck(fileDeck.getName());
 new TrackDeckGUI((GUI)lastWindow, deck.getListOfCards());
 }
 
