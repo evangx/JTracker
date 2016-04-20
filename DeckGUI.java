@@ -83,7 +83,7 @@ editDeck();
 view = new JButton("Ver");
 view.addActionListener(new ActionListener(){
 public void actionPerformed(ActionEvent e){
-
+viewDeck();
 }
 }
 );
@@ -104,6 +104,10 @@ buttons.add(view);
 buttons.add(track);
 add(buttons, BorderLayout.SOUTH);
 
+}
+
+private void viewDeck(){
+new ViewDeckGUI((GUI)lastWindow, deck.getListOfCards(), fileDeck.getName());
 }
 
 private void trackDeck(){
