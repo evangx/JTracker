@@ -19,7 +19,7 @@ private String currentDeck="";
 
 public GUI(){
 super("JTracker");
-setBounds(0,0, 800, 600);
+setBounds(0,0, 800, 630);
 setLayout(null);
 
 JMenuBar jmb = new JMenuBar();

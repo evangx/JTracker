@@ -3,6 +3,9 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
+import javax.swing.JOptionPane;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.sql.Connection;
@@ -11,12 +14,14 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class TrackDeckGUI extends JFrame implements ActionListener{
+public class TrackDeckGUI extends JFrame implements ActionListener, ItemListener{
 GUI lastWindow;
 CardList mySelectedCards;
 Connection connection;
 Statement query;
-JButton Back;
+JButton Back, iLostButton, iWonButton;
+JRadioButton manualDetectionButton, autoDetectionButton;
+
 
 
 
@@ -44,6 +49,13 @@ catch (SQLException e) {
 System.out.println(e.getMessage()); 
 }
 }
+try{
+connection.close();
+}
+catch(Exception e){
+System.out.println(e.getMessage()); 
+}
+
 
 Watcher trackDeck = new Watcher(lastWindow);
 trackDeck.start();
@@ -53,6 +65,33 @@ Back = new JButton("Regresar");
 Back.setBounds(270, 10, 90, 30);
 Back.addActionListener(this);
 add(Back);
+
+iWonButton = new JButton("Gane");
+iWonButton.setBounds(100, 520, 100, 30);
+iWonButton.addActionListener(this);
+add(iWonButton);
+
+iLostButton = new JButton("Me rendi");
+iLostButton.setBounds(100, 550, 100, 30);
+iLostButton.addActionListener(this);
+add(iLostButton);
+
+ButtonGroup bg = new ButtonGroup();
+manualDetectionButton = new JRadioButton("Deteccion manual");
+manualDetectionButton.setBounds(310, 50, 150, 30);
+bg.add(manualDetectionButton);
+manualDetectionButton.addItemListener(this);
+add(manualDetectionButton);
+manualDetectionButton.setSelected(true);
+
+autoDetectionButton = new JRadioButton("Deteccion automatica");
+autoDetectionButton.setBounds(150,50, 150, 30);
+bg.add(autoDetectionButton);
+autoDetectionButton.addItemListener(this);
+add(autoDetectionButton);
+//autoDetectionButton.setEnabled(false);
+
+
 
 addWindowListener(new WindowAdapter(){
 public void windowClosing(WindowEvent e){
@@ -92,7 +131,38 @@ lastWindow.updateDecks();
 lastWindow.setVisible(true);
 setVisible(false);
 dispose();
+}
+else if(e.getSource()==iLostButton){
+if(lastWindow.getLogFilter().getOpposingHero()>0){
+lastWindow.getLogFilter().setGameOver(false);
+}
+else{
+JOptionPane.showMessageDialog(null,"No se detecto una partida","Error",javax.swing.JOptionPane.ERROR_MESSAGE);
+}
+}
+else if(e.getSource()==iWonButton){
+if(lastWindow.getLogFilter().getOpposingHero()>0){
+lastWindow.getLogFilter().setGameOver(true);
+}
+else{
+JOptionPane.showMessageDialog(null,"No se detecto una partida","Error",javax.swing.JOptionPane.ERROR_MESSAGE);
+}
+}
 
 }
+
+public void itemStateChanged(ItemEvent e){
+if(e.getStateChange()==1){
+if(e.getItem()==manualDetectionButton){
+iWonButton.setVisible(true);
+iLostButton.setVisible(true);
 }
+else{
+iWonButton.setVisible(false);
+iLostButton.setVisible(false);
+System.out.println("It'll be added in the future");
+}
+}
+}
+
 }

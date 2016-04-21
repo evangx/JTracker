@@ -117,7 +117,7 @@ new TrackDeckGUI((GUI)lastWindow, deck.getListOfCards());
 
 private void editDeck(){
 
-new CreateDeckGUI(lastWindow, heroClass, nameDeck, deck.getListOfCards(), "Decks/"+fileDeck.getName());
+new CreateDeckGUI(lastWindow, heroClass, deck.isStandard(), nameDeck, deck.getListOfCards(), "Decks/"+fileDeck.getName());
 setVisible(false);
 }
 

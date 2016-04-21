@@ -152,9 +152,13 @@ boolean isWinner=true;
 if(log.indexOf("] zone from FRIENDLY PLAY (Hero) -> FRIENDLY GRAVEYARD")!=-1){
 isWinner=false;
 }
+getGameOver();
+return isWinner;
+}
+
+private void getGameOver(){
 inGame=false;
 mySelectedCards.restartList();
-return isWinner;
 }
 
 private int getOpposingHeroClass(String log){
@@ -201,6 +205,16 @@ heroClass=9;
 }
 
 return heroClass;
+}
+
+public int getOpposingHero(){
+return opposingHero;
+}
+
+public void setGameOver(boolean isWinner){
+getGameOver();
+Record.createRecord(jTracker.getCurrentDeck(),opposingHero, isWinner);
+
 }
 
 }

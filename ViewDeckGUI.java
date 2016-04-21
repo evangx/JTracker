@@ -50,9 +50,15 @@ catch (SQLException e) {
 System.out.println(e.getMessage()); 
 }
 }
+try{
+connection.close();
+}
+catch (SQLException e) { 
+System.out.println(e.getMessage()); 
+}
 matches= new int[9][2];
 
-deckFileName="";
+
 thisMonthInformation="";
 allTimeInformation="";
 allTimeInformation=updateInformation(Record.getAll(deckFileName));

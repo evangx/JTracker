@@ -1,10 +1,15 @@
 import javax.swing.JFrame;
 import javax.swing.JButton;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
 import java.awt.event.*;
 
 public class SelectClassNewDeckGUI extends JFrame implements ActionListener{
 JFrame lastWindow;
 JButton Warrior, Shaman, Rouge, Paladin, Hunter, Druid, Warlock, Mage, Priest, Cancel;
+JRadioButton isWild, isStandard;
+JLabel deckTypeLabel;
 
 public SelectClassNewDeckGUI(JFrame last){
 super("JTracker");
@@ -13,6 +18,25 @@ setLayout(null);
 lastWindow=last;
 setLocation(lastWindow.getLocation());
 setSize(lastWindow.getSize());
+
+deckTypeLabel = new JLabel("tipo de deck: ");
+deckTypeLabel.setBounds(120, 10 , 100, 30);
+add(deckTypeLabel);
+
+ButtonGroup deckType = new ButtonGroup();
+
+isStandard = new JRadioButton ("Standard");
+deckType.add(isStandard);
+isStandard.setBounds(230, 10, 100, 30);
+isStandard.setSelected(true);
+add(isStandard);
+
+isWild = new JRadioButton("Salvaje");
+deckType.add(isWild);
+isWild.setBounds(340, 10, 100, 30);
+add(isWild);
+
+
 
 Warrior = new JButton("Warrior");
 Warrior.setBounds(50, 50, 150, 30);
@@ -81,47 +105,47 @@ lastWindow.setSize(getSize());
 lastWindow.setLocation(getLocation());
 
 if(e.getSource()==Warrior){
-new CreateDeckGUI(lastWindow, "Warrior");
+new CreateDeckGUI(lastWindow, "Warrior", isStandard.isSelected());
 setVisible(false);
 dispose();
 }
 else if(e.getSource()==Shaman){
-new CreateDeckGUI(lastWindow, "Shaman");
+new CreateDeckGUI(lastWindow, "Shaman", isStandard.isSelected());
 setVisible(false);
 dispose();
 }
 else if(e.getSource()==Rouge){
-new CreateDeckGUI(lastWindow, "Rouge");
+new CreateDeckGUI(lastWindow, "Rouge", isStandard.isSelected());
 setVisible(false);
 dispose();
 }
 else if(e.getSource()==Paladin){
-new CreateDeckGUI(lastWindow, "Paladin");
+new CreateDeckGUI(lastWindow, "Paladin", isStandard.isSelected());
 setVisible(false);
 dispose();
 }
 else if(e.getSource()==Hunter){
-new CreateDeckGUI(lastWindow, "Hunter");
+new CreateDeckGUI(lastWindow, "Hunter", isStandard.isSelected());
 setVisible(false);
 dispose();
 }
 else if(e.getSource()==Druid){
-new CreateDeckGUI(lastWindow, "Druid");
+new CreateDeckGUI(lastWindow, "Druid", isStandard.isSelected());
 setVisible(false);
 dispose();
 }
 else if(e.getSource()==Warlock){
-new CreateDeckGUI(lastWindow, "Warlock");
+new CreateDeckGUI(lastWindow, "Warlock", isStandard.isSelected());
 setVisible(false);
 dispose();
 }
 else if(e.getSource()==Mage){
-new CreateDeckGUI(lastWindow, "Mage");
+new CreateDeckGUI(lastWindow, "Mage", isStandard.isSelected());
 setVisible(false);
 dispose();
 }
 else if(e.getSource()==Priest){
-new CreateDeckGUI(lastWindow, "Priest");
+new CreateDeckGUI(lastWindow, "Priest", isStandard.isSelected());
 setVisible(false);
 dispose();
 }

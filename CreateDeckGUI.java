@@ -37,8 +37,9 @@ String mySelectedClass;
 JLabel nameOfDeckLabel;
 JTextField nameOfDeckText;
 String pathEditedDeck=null;
+boolean isStandard;
 
-CreateDeckGUI(JFrame lastWindow, String selectedClass){
+CreateDeckGUI(JFrame lastWindow, String selectedClass, boolean isStandard){
 super("JTracker");
 setLayout(null);
 this.mainMenu=(GUI)lastWindow;
@@ -46,6 +47,7 @@ setSize(mainMenu.getSize());
 setLocation(mainMenu.getLocation());
 
 mySelectedClass=selectedClass;
+this.isStandard=isStandard;
 
 TrackNewDeck = new JButton("Crear Mazo Detectado");
 TrackNewDeck.setBounds(10,10,160, 30);
@@ -81,7 +83,12 @@ System.exit(0);
 Connection(); 
 ResultSet resultado = null; 
 try { 
+if(isStandard){
+resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n inner join CardSets as cs on (c.cardId=n.cardId and c.cardset=cs.setcardid) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='esMX' and cost>=0 and rarity!='' and collectible=1 and (cs.year<2 or cs.year>=ROUND((select MAX(year) from CardSets)-1)) order by c.playerClass desc, cost, n.name;"); 
+}
+else{
 resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n on (c.cardId=n.cardId) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='esMX' and cost>=0 and rarity!='' and collectible=1 order by c.playerClass desc, cost, name;"); 
+}
 }
 catch (SQLException e) { 
 System.out.println(e.getMessage()); 
@@ -133,7 +140,7 @@ setVisible(true);
 mainMenu.setVisible(false);
 }
 
-CreateDeckGUI(JFrame lastWindow, String selectedClass, String title, ArrayList deckToEdit, String path){
+CreateDeckGUI(JFrame lastWindow, String selectedClass, boolean isStandard, String title, ArrayList deckToEdit, String path){
 super("JTracker");
 setLayout(null);
 this.mainMenu=(GUI)lastWindow;
@@ -141,6 +148,7 @@ setSize(mainMenu.getSize());
 setLocation(mainMenu.getLocation());
 
 mySelectedClass=selectedClass;
+this.isStandard=isStandard;
 
 TrackNewDeck = new JButton("Crear Mazo Detectado");
 TrackNewDeck.setBounds(10,10,160, 30);
@@ -183,7 +191,12 @@ add(scrollListSelectedCards);
 Connection(); 
 ResultSet resultado = null; 
 try { 
+if(isStandard){
+resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n inner join CardSets as cs on (c.cardId=n.cardId and c.cardset=cs.setcardid) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='esMX' and cost>=0 and rarity!='' and collectible=1 and (cs.year<2 or cs.year>=ROUND((select MAX(year) from CardSets)-1)) order by c.playerClass desc, cost, n.name;"); 
+}
+else{
 resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n on (c.cardId=n.cardId) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='esMX' and cost>=0 and rarity!='' and collectible=1 order by c.playerClass desc, cost, name;"); 
+}
 }
 catch (SQLException e) { 
 System.out.println(e.getMessage()); 
@@ -296,7 +309,7 @@ ObjectOutputStream os;
 try{
 fs = new FileOutputStream(generateFileName());
 os = new ObjectOutputStream(fs);
-os.writeObject(new Deck(nameOfDeckText.getText(), mySelectedCards.getCurrentCards(), mySelectedClass));
+os.writeObject(new Deck(nameOfDeckText.getText(), mySelectedCards.getCurrentCards(), mySelectedClass, isStandard));
 os.close();
 fs.close();
 mainMenu.setSize(getSize());
