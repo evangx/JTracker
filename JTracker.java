@@ -6,11 +6,10 @@ static String configFilePath;
 static File configFile;
 
 public static void main(String [] args){
-
 if(!existsConfigFile("Windows")){
 createFile();
 }
-
+Configuration.createFile();
 GUI programa= new GUI();
 programa.setVisible(true);
 }

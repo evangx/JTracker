@@ -21,7 +21,7 @@ Connection connection;
 Statement query;
 JButton Back, iLostButton, iWonButton;
 JRadioButton manualDetectionButton, autoDetectionButton;
-
+Watcher trackDeck, autoTrack;
 
 
 
@@ -59,7 +59,7 @@ System.out.println(e.getMessage());
 }
 
 
-Watcher trackDeck = new Watcher(lastWindow);
+trackDeck = new Watcher(lastWindow);
 trackDeck.start();
 lastWindow.getLogFilter().setView(mySelectedCards);
 
@@ -158,11 +158,36 @@ if(e.getStateChange()==1){
 if(e.getItem()==manualDetectionButton){
 iWonButton.setVisible(true);
 iLostButton.setVisible(true);
+if(autoTrack!=null){
+autoTrack.kill();
+autoTrack=null;
+}
+
 }
 else{
+
+//System.out.println("It'll be added in the future");
+if(!lastWindow.getCurrentProfile().equals("Default")){
 iWonButton.setVisible(false);
 iLostButton.setVisible(false);
-System.out.println("It'll be added in the future");
+Connection();
+ResultSet resultado = null; 
+try { 
+resultado = query.executeQuery("Select battletag from Profiles where name='"+lastWindow.getCurrentProfile()+"';"); 
+String temp=resultado.getString(1);
+connection.close();
+autoTrack = new Watcher(lastWindow.getLogFilter(), temp);
+autoTrack.start();
+}
+catch(Exception ex){
+System.out.println(ex.getMessage());
+}
+
+}
+else{
+JOptionPane.showMessageDialog(null,"Esta funcion no se encuentra \ndisponible con el perfil Default.","Informacion",javax.swing.JOptionPane.INFORMATION_MESSAGE);
+manualDetectionButton.setSelected(true);
+}
 }
 }
 }

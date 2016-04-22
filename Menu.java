@@ -34,6 +34,7 @@ updateProfiles();
 
 public void updateProfiles(){
 profilesMenu.removeAll();
+defaultProfileMenuItem.addActionListener(this);
 profilesMenu.add(defaultProfileMenuItem);
 
 deleteProfileMenu = new JMenu("Delete Profile");
@@ -111,6 +112,9 @@ profilesMenu.add(deleteProfileMenu);
 public void actionPerformed(ActionEvent e){
 if(e.getSource()==newProfileMenuItem){;
 new NewProfileGUI(mainWindow, this, profiles);
+}
+else if(e.getSource()==defaultProfileMenuItem){
+lastWindow.setCurrentProfile("Default");
 }
 }
 

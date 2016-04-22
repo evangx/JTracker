@@ -1,4 +1,4 @@
 *.class
 *.log
 Decks/
-configuration.properties
+Configuration.properties

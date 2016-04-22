@@ -11,7 +11,16 @@ l= new Reader(jTracker);
 l.preparar();
 }
 
+public Watcher(LogFilter lf, String profileToTrack){
+l= new Reader(lf, profileToTrack);
+l.preparar();
+}
+
 public Watcher(){
+}
+
+public void kill(){
+vigilar=false;
 }
 
 public void run(){

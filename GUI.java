@@ -25,6 +25,7 @@ super("JTracker");
 setBounds(0,0, 800, 630);
 setLayout(null);
 
+currentProfile=Configuration.getLastProfile();
 
 menuBar = new Menu(this, this);
 setJMenuBar(menuBar);
@@ -81,7 +82,10 @@ return currentProfile;
 
 public void setCurrentProfile(String currentProfile){
 this.currentProfile=currentProfile;
+Configuration.setCurrentProfile(currentProfile);
 }
+
+
 
 public Menu getCurrentMenuBar(){
 return menuBar;

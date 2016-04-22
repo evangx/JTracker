@@ -5,16 +5,40 @@ RandomAccessFile f = null;
 long indice_actual=0;
 LogFilter lf;
 GUI jTracker;
+boolean isAutoTracking=false;
+String profileToTrack;
+AutoTrackLogFilter autoTrackLogFilter;
+Watcher watcher;
+String path="";
 
 public Reader(GUI jTracker){
 this.jTracker=jTracker;
 }
 
-public void preparar(){
+public Reader(LogFilter lf, String profileToTrack){
+this.lf=lf;
+isAutoTracking=true;
+this.profileToTrack=profileToTrack;
+}
 
+public void preparar(){
+path=Configuration.getHearthstonePath();
+path+="Logs\\";
+if(!isAutoTracking){
 lf= new LogFilter(jTracker);
+}
+else{
+autoTrackLogFilter = new AutoTrackLogFilter(lf, profileToTrack);
+}
 try{
-f=new RandomAccessFile("C:\\Program Files\\Hearthstone\\Logs\\Zone.log", "r");
+if(!isAutoTracking){
+path+="Zone.log";
+f=new RandomAccessFile(path, "r");
+}
+else{
+path+="Power.log";
+f=new RandomAccessFile(path, "r");
+}
 indice_actual=f.length();
 System.out.println("original size"+ indice_actual);
 }
@@ -24,13 +48,17 @@ System.out.println(e.getMessage());
 }
 
 public void programa(){
-
 try{
-f=new RandomAccessFile("C:\\Program Files\\Hearthstone\\Logs\\Zone.log", "r");
+f=new RandomAccessFile(path, "r");
 if(indice_actual<f.length()){
 f.seek(indice_actual);
 while(f.getFilePointer()<f.length()){
+if(!isAutoTracking){
 lf.Filter(f.readLine());
+}
+else{
+autoTrackLogFilter.Filter(f.readLine());
+}
 }
 
 indice_actual=f.length();
@@ -47,5 +75,8 @@ catch(Exception e){
 System.out.println(e.getMessage());
 }
 }
+
+
+
 
 }

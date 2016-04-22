@@ -35,14 +35,16 @@ if(log.indexOf("] zone from  -> FRIENDLY HAND")!=-1){
 getName(log);
 }
 */
-if(log.indexOf(" START waiting for [name=")!=-1 && log.indexOf(" zone=HAND ")!=-1 && !MulliganStarted){
+if(log.indexOf(" START waiting for [name=")!=-1 && log.indexOf(" zone=HAND ")!=-1 && !MulliganStarted && log.indexOf("UNKNOWN ENTITY [cardType=INVALID]")==-1){
+System.out.print("en Mano:");
 getName(log);
 mySelectedCards.cardPlayed(getId(log));
 }
-else if(log.indexOf("m_id=1 END waiting for zone OPPOSING PLAY (Hero Power)") != -1){
+//else if(log.indexOf("m_id=1 END waiting for zone OPPOSING PLAY (Hero Power)") != -1){
+else if(log.indexOf("value=BEGIN_MULLIGAN") != -1){
 MulliganStarted=true;
 }
-else if(log.indexOf("] zone from FRIENDLY DECK -> FRIENDLY HAND")!=-1){
+else if(log.indexOf("] zone from FRIENDLY DECK -> FRIENDLY HAND")!=-1 && MulliganStarted){
 if(numMulligan==0){
 firstDraw=true;
 }
@@ -66,13 +68,22 @@ System.out.println("Mulligan Completo");
 inMulligan=false;
 firstDraw=false;
 MulliganStarted=false;
+numMulligan=0;
 }
 else if(numMulligan==2){
 System.out.println("Mulligan Completo");
 inMulligan=false;
 firstDraw=false;
 MulliganStarted=false;
+numMulligan=0;
 }
+}
+else if(numMulligan<2 && log.indexOf(" END waiting for zone FRIENDLY DECK")!=-1 && MulliganStarted){
+System.out.println("Mulligan Completo");
+inMulligan=false;
+firstDraw=false;
+MulliganStarted=false;
+numMulligan=0;
 }
 }
 else{
@@ -93,7 +104,7 @@ mySelectedCards.cardPlayed(getId(log));
 else if(log.indexOf("] zone from FRIENDLY PLAY (Hero) -> FRIENDLY GRAVEYARD")!=-1 || log.indexOf("] zone from OPPOSING PLAY (Hero) -> OPPOSING GRAVEYARD")!=-1){
 System.out.print("Someone lose: ");
 getName(log);
-Record.createRecord(jTracker.getCurrentDeck(),opposingHero,getGameOver(log));
+Record.createRecord(jTracker.getCurrentDeck(),opposingHero,getGameOver(log), jTracker.getCurrentProfile());
 }
 }
 }
@@ -116,8 +127,12 @@ if(log.indexOf("] zone from  -> OPPOSING PLAY (Hero)")!=-1){
 opposingHero=getOpposingHeroClass(log);
 
 inGame=true;
+MulliganStarted=false;
+numMulligan=0;
+firstDraw=false;
 System.out.println("Inicia juego");
 inMulligan=true;
+
 System.out.println("En Mano: ");
 
 }
@@ -212,9 +227,10 @@ return opposingHero;
 }
 
 public void setGameOver(boolean isWinner){
+if(inGame){
 getGameOver();
-Record.createRecord(jTracker.getCurrentDeck(),opposingHero, isWinner);
-
+Record.createRecord(jTracker.getCurrentDeck(),opposingHero, isWinner, jTracker.getCurrentProfile());
+}
 }
 
 }

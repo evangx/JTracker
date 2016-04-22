@@ -3,10 +3,10 @@ public class Record{
 static Connection connection;
 static Statement query;
 static ResultSet rs;
-public static void createRecord(String deck, int opposingHero, boolean isWinner){
+public static void createRecord(String deck, int opposingHero, boolean isWinner, String profile){
 Connection();
 try{
-query.execute("insert into Matches values('"+deck+"', "+ opposingHero+", '"+ isWinner + "', date('now'));");
+query.execute("insert into Matches values('"+deck+"', "+ opposingHero+", '"+ isWinner + "', date('now'), (select oid from Profiles where name='"+profile+"'));");
 }
 catch(Exception e){
 System.out.println(e.getMessage());
