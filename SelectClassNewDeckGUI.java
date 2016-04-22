@@ -19,6 +19,9 @@ lastWindow=last;
 setLocation(lastWindow.getLocation());
 setSize(lastWindow.getSize());
 
+GUI t= (GUI)lastWindow;
+setJMenuBar(t.getCurrentMenuBar());
+
 deckTypeLabel = new JLabel("tipo de deck: ");
 deckTypeLabel.setBounds(120, 10 , 100, 30);
 add(deckTypeLabel);

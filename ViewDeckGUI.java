@@ -32,7 +32,7 @@ setSize(lastWindow.getSize());
 setLocation(lastWindow.getLocation());
 setLayout(null);
 
-
+setJMenuBar(lastWindow.getCurrentMenuBar());
 mySelectedCards = new CardList(false);
 JScrollPane scrollListSelectedCards = new JScrollPane(mySelectedCards);
 scrollListSelectedCards.setBounds(100, 110, 300, 400);

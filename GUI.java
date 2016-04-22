@@ -1,5 +1,7 @@
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -15,17 +17,17 @@ LogFilter lg;
 JButton CreateDeck;
 DeckList dl;
 private String currentDeck="";
-
+private String currentProfile="Default";
+Menu menuBar;
 
 public GUI(){
 super("JTracker");
 setBounds(0,0, 800, 630);
 setLayout(null);
 
-JMenuBar jmb = new JMenuBar();
-setJMenuBar(jmb);
 
-
+menuBar = new Menu(this, this);
+setJMenuBar(menuBar);
 
 CreateDeck = new JButton("Nuevo deck");
 CreateDeck.setBounds(10, 10, 100, 30);
@@ -37,6 +39,10 @@ add(CreateDeck);
 addWindowListener(new WindowAdapter(){
 public void windowClosing(WindowEvent e){
 System.exit(0);
+}
+
+public void windowActivated(WindowEvent e){
+setJMenuBar(menuBar);
 }
 }
 );
@@ -67,6 +73,18 @@ return currentDeck;
 
 public void setCurrentDeck(String currentDeck){
 this.currentDeck=currentDeck;
+}
+
+public String getCurrentProfile(){
+return currentProfile;
+}
+
+public void setCurrentProfile(String currentProfile){
+this.currentProfile=currentProfile;
+}
+
+public Menu getCurrentMenuBar(){
+return menuBar;
 }
 
 public void actionPerformed(ActionEvent e){

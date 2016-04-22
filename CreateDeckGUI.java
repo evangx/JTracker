@@ -46,6 +46,8 @@ this.mainMenu=(GUI)lastWindow;
 setSize(mainMenu.getSize());
 setLocation(mainMenu.getLocation());
 
+setJMenuBar(mainMenu.getCurrentMenuBar());
+
 mySelectedClass=selectedClass;
 this.isStandard=isStandard;
 
@@ -146,6 +148,8 @@ setLayout(null);
 this.mainMenu=(GUI)lastWindow;
 setSize(mainMenu.getSize());
 setLocation(mainMenu.getLocation());
+
+setJMenuBar(mainMenu.getCurrentMenuBar());
 
 mySelectedClass=selectedClass;
 this.isStandard=isStandard;
