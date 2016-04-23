@@ -6,7 +6,15 @@ static String configFilePath;
 static File configFile;
 
 public static void main(String [] args){
-if(!existsConfigFile("Windows")){
+String os = System.getProperty("os.name");
+os=os.toLowerCase();
+if(os.indexOf("windows")!=-1){
+os="Windows";
+}
+else if(os.indexOf("mac")!=-1){
+os="Mac";
+}
+if(!existsConfigFile(os)){
 createFile();
 }
 Configuration.createFile();
@@ -17,8 +25,12 @@ programa.setVisible(true);
 private static boolean existsConfigFile(String operativeSystem){
 if(operativeSystem.equals("Windows")){
 configFilePath=System.getenv("LOCALAPPDATA");;
+configFilePath+="/Blizzard/Hearthstone/";
 }
-configFilePath+="/Blizzard/Hearthstone/log.config";
+else if(operativeSystem.equals("Mac")){
+configFilePath="~/Library/Preferences/Blizzard/Hearthstone/";
+}
+configFilePath+="log.config";
 configFile = new File(configFilePath);
 return configFile.exists();
 }

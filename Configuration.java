@@ -16,6 +16,7 @@ File f = new File("Configuration.properties");
 if(!f.exists()){
 setDefaultPath();
 setCurrentProfile("Default");
+setCardLang("enUS");
 }
 }
 
@@ -35,16 +36,25 @@ return getProperty("Path");
 
 private static void setDefaultPath(){
 String path="";
-if(System.getProperty("os.name").indexOf("Windows")!=-1){
+if(System.getProperty("os.name").toLowerCase().indexOf("windows")!=-1){
 path+="C:\\Program Files";
 if(!System.getProperty("os.arch").equals("x86")){
 path+=" x86";
 }
 path+="\\Hearthstone\\";
 }
-else{
+else if (System.getProperty("os.name").toLowerCase().indexOf("mac")!=-1){
+path="/Applications/Hearthstone/";
 }
 setProperty("Path", path);
+}
+
+public static String getCardLang(){
+return getProperty("CardLang");
+}
+
+public static void setCardLang(String lang){
+setProperty("CardLang", lang);
 }
 
 private static void setProperty(String property, String value){

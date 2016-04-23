@@ -3,6 +3,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButtonMenuItem;
 import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,16 +22,69 @@ Connection connection;
 Statement query;
 ArrayList profiles;
 GUI lastWindow;
+JMenu cardLangs;
 
 public Menu(JFrame mainWindow, GUI lastWindow){
 super();
 this.mainWindow=mainWindow;
 this.lastWindow=lastWindow;
+
 profilesMenu = new JMenu("Profiles");
 add(profilesMenu);
+
 defaultProfileMenuItem = new JMenuItem("Default");
 profilesMenu.add(defaultProfileMenuItem);
 updateProfiles();
+
+JMenu languageMenu = new JMenu("Language");
+add(languageMenu);
+
+cardLangs = new JMenu("Cards");
+languageMenu.add(cardLangs);
+
+createListOfCardLangs(Configuration.getCardLang());
+
+}
+
+private void createListOfCardLangs(String selectedLang){
+if(selectedLang.equals("") || selectedLang==null){
+selectedLang="enUS";
+}
+Connection();
+ResultSet resultado= null;
+
+ButtonGroup group = new ButtonGroup();
+
+try{
+resultado = query.executeQuery("Select DISTINCT(lang) from Names");
+JRadioButtonMenuItem submenuTemp;
+while(resultado.next()){
+submenuTemp = new JRadioButtonMenuItem (resultado.getString(1));
+if(submenuTemp.getText().equals(selectedLang)){
+submenuTemp.setSelected(true);
+}
+submenuTemp.addActionListener(new ActionListener(){
+public void actionPerformed(ActionEvent e){
+JRadioButtonMenuItem sbmTemp=(JRadioButtonMenuItem) e.getSource();
+lastWindow.setCurrentCardLang(sbmTemp.getText());
+}
+});
+group.add(submenuTemp);
+cardLangs.add(submenuTemp);
+}
+}
+catch(Exception e){
+System.out.println(e.getMessage());
+}
+finally{
+try{
+connection.close();
+}
+catch(Exception ex){
+System.out.println(ex.getMessage());
+}
+}
+
 }
 
 public void updateProfiles(){

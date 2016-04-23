@@ -81,15 +81,15 @@ System.exit(0);
 }
 );
 
-
+String cardLang=Configuration.getCardLang();
 Connection(); 
 ResultSet resultado = null; 
 try { 
 if(isStandard){
-resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n inner join CardSets as cs on (c.cardId=n.cardId and c.cardset=cs.setcardid) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='esMX' and cost>=0 and rarity!='' and collectible=1 and (cs.year<2 or cs.year>=ROUND((select MAX(year) from CardSets)-1)) order by c.playerClass desc, cost, n.name;"); 
+resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n inner join CardSets as cs on (c.cardId=n.cardId and c.cardset=cs.setcardid) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='" + mainMenu.getCurrentCardLang() + "' and cost>=0 and rarity!='' and collectible=1 and (cs.year<2 or cs.year>=ROUND((select MAX(year) from CardSets)-1)) order by c.playerClass desc, cost, n.name;"); 
 }
 else{
-resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n on (c.cardId=n.cardId) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='esMX' and cost>=0 and rarity!='' and collectible=1 order by c.playerClass desc, cost, name;"); 
+resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n on (c.cardId=n.cardId) where (c.playerClass='" + selectedClass + "' or c.playerClass='') and lang='" + mainMenu.getCurrentCardLang() + "' and cost>=0 and rarity!='' and collectible=1 order by c.playerClass desc, cost, name;"); 
 }
 }
 catch (SQLException e) { 
@@ -196,10 +196,10 @@ Connection();
 ResultSet resultado = null; 
 try { 
 if(isStandard){
-resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n inner join CardSets as cs on (c.cardId=n.cardId and c.cardset=cs.setcardid) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='esMX' and cost>=0 and rarity!='' and collectible=1 and (cs.year<2 or cs.year>=ROUND((select MAX(year) from CardSets)-1)) order by c.playerClass desc, cost, n.name;"); 
+resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n inner join CardSets as cs on (c.cardId=n.cardId and c.cardset=cs.setcardid) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='" + mainMenu.getCurrentCardLang() + "' and cost>=0 and rarity!='' and collectible=1 and (cs.year<2 or cs.year>=ROUND((select MAX(year) from CardSets)-1)) order by c.playerClass desc, cost, n.name;"); 
 }
 else{
-resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n on (c.cardId=n.cardId) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='esMX' and cost>=0 and rarity!='' and collectible=1 order by c.playerClass desc, cost, name;"); 
+resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n on (c.cardId=n.cardId) where (c.playerClass='"+selectedClass+"' or c.playerClass='') and lang='" + mainMenu.getCurrentCardLang() + "' and cost>=0 and rarity!='' and collectible=1 order by c.playerClass desc, cost, name;"); 
 }
 }
 catch (SQLException e) { 

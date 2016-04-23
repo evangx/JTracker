@@ -43,7 +43,7 @@ Connection();
 ResultSet resultado = null; 
 for(int i=0; i<receivedCards.size(); i++){
 try { 
-resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n on (c.cardId=n.cardId) where lang='esMX' and cost>=0 and rarity!='' and collectible=1 and c.cardId='"+receivedCards.get(i)+"';"); 
+resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n on (c.cardId=n.cardId) where lang='" + lastWindow.getCurrentCardLang() + "' and cost>=0 and rarity!='' and collectible=1 and c.cardId='"+receivedCards.get(i)+"';"); 
 mySelectedCards.addCard( new Card(resultado.getString(1),resultado.getString(2), resultado.getInt(4), resultado.getString(3)));
 }
 catch (SQLException e) { 

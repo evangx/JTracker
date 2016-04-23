@@ -18,6 +18,7 @@ JButton CreateDeck;
 DeckList dl;
 private String currentDeck="";
 private String currentProfile="Default";
+private String currentCardLang="enUS";
 Menu menuBar;
 
 public GUI(){
@@ -26,6 +27,7 @@ setBounds(0,0, 800, 630);
 setLayout(null);
 
 currentProfile=Configuration.getLastProfile();
+currentCardLang=Configuration.getCardLang();
 
 menuBar = new Menu(this, this);
 setJMenuBar(menuBar);
@@ -85,7 +87,14 @@ this.currentProfile=currentProfile;
 Configuration.setCurrentProfile(currentProfile);
 }
 
+public String getCurrentCardLang(){
+return currentCardLang;
+}
 
+public void setCurrentCardLang(String currentCardLang){
+this.currentCardLang=currentCardLang;
+Configuration.setCardLang(currentCardLang);
+}
 
 public Menu getCurrentMenuBar(){
 return menuBar;
