@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class Menu extends JMenuBar implements ActionListener, ItemListener{
-JMenuItem newProfileMenuItem;
+JMenuItem newProfileMenuItem, changeHearthstonePath;
 JFrame mainWindow;
 JMenuItem defaultProfileMenuItem;
 JMenu profilesMenu, deleteProfileMenu;
@@ -43,6 +43,14 @@ cardLangs = new JMenu("Cards");
 languageMenu.add(cardLangs);
 
 createListOfCardLangs(Configuration.getCardLang());
+
+JMenu configurationMenu = new JMenu("Configuration");
+add(configurationMenu);
+
+changeHearthstonePath = new JMenuItem("Hearthstone path");
+changeHearthstonePath.addActionListener(this);
+configurationMenu.add(changeHearthstonePath);
+
 
 }
 
@@ -170,6 +178,18 @@ new NewProfileGUI(mainWindow, this, profiles);
 }
 else if(e.getSource()==defaultProfileMenuItem){
 lastWindow.setCurrentProfile("Default");
+}
+else if(e.getSource()==changeHearthstonePath){
+String path = Configuration.getHearthstonePath();
+String newPath="";
+newPath=JOptionPane.showInputDialog("Ingrese el directiorio de\ninstalacion de hearthstone",path);
+System.out.println(path);
+System.out.println(newPath);
+if(newPath!=null){
+if(!path.equals(newPath) && newPath.length()>0){
+Configuration.setHearthstonePath(newPath);
+}
+}
 }
 }
 

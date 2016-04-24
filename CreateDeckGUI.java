@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class CreateDeckGUI extends JFrame implements ActionListener, MouseListener{
 
-JButton TrackNewDeck, Save, Cancel;
+JButton TrackNewDeck, Save, Cancel, convert;
 GUI mainMenu;
 JPanel test;
 Connection connection;
@@ -38,6 +38,7 @@ JLabel nameOfDeckLabel;
 JTextField nameOfDeckText;
 String pathEditedDeck=null;
 boolean isStandard;
+JTable table;
 
 CreateDeckGUI(JFrame lastWindow, String selectedClass, boolean isStandard){
 super("JTracker");
@@ -109,7 +110,7 @@ System.out.println("Fallo al crear objetos "+e.getMessage());
 Vector dataNames = new Vector();
 dataNames.add("Cartas");
 
-JTable table = new JTable(new MyTableModel(cartas, dataNames));
+table = new JTable(new MyTableModel(cartas, dataNames));
 table.setDefaultRenderer(JPanel.class, new DataRenderer());
 table.setFillsViewportHeight(true);
 JScrollPane scrollPaneTable = new JScrollPane(table);
@@ -210,9 +211,6 @@ try{
 int indexForCards=0;
 while(resultado.next()){
 cartas.add( new Card(resultado.getString(1),resultado.getString(2), resultado.getInt(4), resultado.getString(3)));
-if(resultado.getString(1).equals("EX1_247")){
-System.out.println("EX1_247"+resultado.getString(1));
-}
 for (int i=0, j=0; i<deckToEdit.size();i++, j++){
 if(deckToEdit.get(i).equals(resultado.getString(1))){
 System.out.println(indexForCards);
@@ -228,7 +226,7 @@ System.out.println("Fallo al crear objetos "+e.getMessage());
 Vector dataNames = new Vector();
 dataNames.add("Cartas");
 
-JTable table = new JTable(new MyTableModel(cartas, dataNames));
+table = new JTable(new MyTableModel(cartas, dataNames));
 table.setDefaultRenderer(JPanel.class, new DataRenderer());
 table.setFillsViewportHeight(true);
 JScrollPane scrollPaneTable = new JScrollPane(table);
@@ -256,6 +254,18 @@ add(numberOfCardsLabel);
 numberOfCardsLabel.setText(deckToEdit.size()+"/30");
 nameOfDeckText.setText(title);
 pathEditedDeck=path;
+
+String tempButtonName="";
+if(isStandard){
+tempButtonName="Convertir en salvaje";
+}
+else{
+tempButtonName="Convertir en standard";
+}
+convert = new JButton(tempButtonName);
+convert.setBounds(370, 10, 200, 30);
+convert.addActionListener(this);
+add(convert);
 
 setVisible(true);
 mainMenu.setVisible(false);
@@ -343,6 +353,62 @@ mainMenu.setVisible(true);
 setVisible(false);
 dispose();
 }
+else if(e.getSource()==convert){
+updateListOfCards();
+if(isStandard){
+convert.setText("Convertir en salvaje");
+}
+else{
+convert.setText("Convertir en standard");
+}
+}
+}
+
+public void updateListOfCards(){
+isStandard=!isStandard;
+new Thread(){
+public void run(){
+String cardLang=Configuration.getCardLang();
+Connection(); 
+ResultSet resultado = null; 
+try { 
+if(isStandard){
+resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n inner join CardSets as cs on (c.cardId=n.cardId and c.cardset=cs.setcardid) where (c.playerClass='"+mySelectedClass+"' or c.playerClass='') and lang='" + mainMenu.getCurrentCardLang() + "' and cost>=0 and rarity!='' and collectible=1 and (cs.year<2 or cs.year>=ROUND((select MAX(year) from CardSets)-1)) order by c.playerClass desc, cost, n.name;"); 
+}
+else{
+resultado = query.executeQuery("Select c.cardId, n.name, c.rarity, c.cost from Cards as c inner join Names as n on (c.cardId=n.cardId) where (c.playerClass='" + mySelectedClass + "' or c.playerClass='') and lang='" + mainMenu.getCurrentCardLang() + "' and cost>=0 and rarity!='' and collectible=1 order by c.playerClass desc, cost, name;"); 
+}
+}
+catch (SQLException e) { 
+System.out.println(e.getMessage()); 
+}
+cartas = new Vector();
+ArrayList ids = new ArrayList();
+try{
+
+while(resultado.next()){
+cartas.add( new Card(resultado.getString(1),resultado.getString(2), resultado.getInt(4), resultado.getString(3)));
+ids.add(resultado.getString(1));
+}
+}
+catch(Exception e){
+System.out.println("Fallo al crear objetos "+e.getMessage());
+}
+Vector dataNames = new Vector();
+dataNames.add("Cartas");
+table.setModel(new MyTableModel(cartas, dataNames));
+if(isStandard){
+Card tempCard;
+for(int i=0;i<mySelectedCards.getComponentCount();i++){
+tempCard=(Card)mySelectedCards.getComponent(i);
+if(!ids.contains(tempCard.getId())){
+mySelectedCards.removeCard(tempCard, true);
+}
+}
+}
+JOptionPane.showMessageDialog(null,"Conversion terminada","Error",javax.swing.JOptionPane.INFORMATION_MESSAGE);
+}
+}.start();
 }
 
 public void mouseClicked(MouseEvent e){

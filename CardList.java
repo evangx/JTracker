@@ -124,22 +124,7 @@ temp.addMouseListener( new MouseAdapter(){
 
 public void mouseReleased(MouseEvent e){
 Card tem= (Card)e.getSource();
-if(tem.getAmount()==2){
-numberOfCards-=1;
-createDeckWindow.updateNumberOfCardsLabel();
-tem.deleteCopy();
-
-//System.out.println("copia borrada");
-}
-else{
-remove(tem);
-numberOfCards-=1;
-createDeckWindow.updateNumberOfCardsLabel();
-currentCards.remove(currentCards.indexOf(tem.getId()));
-
-updateUI();
-//System.out.println("carta borrada");
-}
+removeCard(tem, false);
 //System.out.println("cantidad restante"+numberOfCards);
 }
 }
@@ -193,6 +178,31 @@ temp=(Card)getComponent(i);
 temp.restoreCard();
 }
 }
+
+public void removeCard(Card tem, boolean allCopies){
+if (!allCopies){
+if(tem.getAmount()==2){
+numberOfCards-=1;
+tem.deleteCopy();
+//System.out.println("copia borrada");
+}
+else{
+remove(tem);
+numberOfCards-=1;
+currentCards.remove(currentCards.indexOf(tem.getId()));
+updateUI();
+//System.out.println("carta borrada");
+}
+}
+else{
+remove(tem);
+numberOfCards-=tem.getAmount();
+currentCards.remove(currentCards.indexOf(tem.getId()));
+updateUI();
+}
+createDeckWindow.updateNumberOfCardsLabel();
+}
+
 
 
 public static void main(String [] args){

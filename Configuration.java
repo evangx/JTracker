@@ -49,6 +49,10 @@ path="/Applications/Hearthstone/";
 setProperty("Path", path);
 }
 
+public static void setHearthstonePath(String path){
+setProperty("Path", path);
+}
+
 public static String getCardLang(){
 return getProperty("CardLang");
 }
